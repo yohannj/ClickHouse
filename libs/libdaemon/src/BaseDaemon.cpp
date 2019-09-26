@@ -166,6 +166,7 @@ public:
         {
             int sig = 0;
             DB::readBinary(sig, in);
+            LOG_TRACE(log, "Received signal " << sig);
 
             if (sig == Signals::StopThread)
             {
@@ -776,7 +777,9 @@ void BaseDaemon::initializeTerminationAndSignalProcessing()
 
 void BaseDaemon::logRevision() const
 {
-    Logger::root().information("Starting " + std::string{VERSION_FULL} + " with revision " + std::to_string(ClickHouseRevision::get()));
+    Logger::root().information("Starting " + std::string{VERSION_FULL}
+        + " with revision " + std::to_string(ClickHouseRevision::get())
+        + ", PID " + std::to_string(getpid()));
 }
 
 /// Makes server shutdown if at least one Poco::Task have failed.
